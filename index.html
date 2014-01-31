@@ -206,7 +206,9 @@ these objects still worsen GC scanning although they are not garbage, but GC doe
 <h3>
 <a name="z-stack-for-web-backend" class="anchor" href="#z-stack-for-web-backend"><span class="octicon octicon-link"></span></a>Z Stack for Web Backend</h3>
 
-<p>Except the kernel, we need a web backend stack, not only to promote Landz itself, but also to enable the Landz "eating its own dog food". An direct epoll syscall wrappings have been provided finally based on my reflections and reviews to the current Java shipped NIO implementation(but only for x86-64 linux now). This seems also interesting to the next version of Netty mentioned in <a href="https://blog.twitter.com/2013/netty-4-at-twitter-reduced-gc-overhead">Twitter blog entry</a>. And more, an aio TCP module(landz.net module) is ready(the formal name may be Proactor). Because I prefer a composable architecture, rather than the common inherited design. It may need more collections to the requirements to API from the users.</p>
+<p>Except the kernel, we need a web backend stack, not only to promote Landz itself, but also to enable the Landz "eating its own dog food".</p> 
+
+<p>An direct epoll syscall wrappings have been provided finally based on my reflections and reviews to the current Java shipped NIO implementation(but only for x86-64 linux now). Netty've also <a href="https://blog.twitter.com/2013/netty-4-at-twitter-reduced-gc-overhead">had enough about nio's epoll bugs</a>. And more, an aio TCP module(landz.net module) is ready(the formal name may be Proactor). Because I prefer a composable architecture, rather than the common inherited design. It may need more collections to the requirements to API from the users.</p>
 
 <p>A whole web backend is huge, Landz is glad to collaborate with other open source projects. Join us at <a href="http://groups.google.com/d/forum/landz">Landz's group</a>.</p>
 
@@ -234,6 +236,21 @@ these objects still worsen GC scanning although they are not garbage, but GC doe
 2014-01-31 </p>
       </section>
     </div>
+
+     <div id="disqus_thread">
+    <script type="text/javascript">
+        var disqus_shortname = 'jinmingjian';
+        var disqus_identifier = 'landz';
+        var disqus_title = '201401310050'; 
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
     <footer>
       <p>Project maintained by <a href="https://github.com/landz">landz</a></p>
       <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
