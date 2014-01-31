@@ -160,13 +160,13 @@ these objects still worsen GC scanning although they are not garbage, but GC doe
 <p> Two points here: </p>
 
 <ul>
-<li>zmalloc is faster than jemalloc and glibc in these simple tests; </li>
+<li><strong>zmalloc is faster than jemalloc and glibc' malloc in these simple tests</strong>; </li>
 <li>
 <p>the glibc' malloc(modern kernel, like now my 3.12.9) has been faster than jemalloc(my 3.5.0) in several aspects in these simple tests;</p>
 </li>
 </ul>
 
-<p>In the meantime, in single thread test, zmalloc is 20x to 50x faster than Netty's new <a href="https://blog.twitter.com/2013/netty-4-at-twitter-reduced-gc-overhead">ByteBufAllocator</a>. This confirms to the I understand to the Netty's new allocator. But, one unfair thing here is that the Netty only provide a Buffer implementation which is contributed to the garbage collection itself. However, zmalloc just operates on the raw memory address and products zero garbage. </p>
+<p>In the meantime, in single thread test, <strong>zmalloc is 20x to 50x faster than Netty's new <a href="https://blog.twitter.com/2013/netty-4-at-twitter-reduced-gc-overhead">ByteBufAllocator</a></strong>. This confirms to the I understand to the Netty's new allocator. But, one unfair thing here is that the Netty only provide a Buffer implementation which is contributed to the garbage collection itself. However, zmalloc just operates on the raw memory address and products zero garbage. </p>
 
 <p>For more complex scenarios, I do not further tests. Because the C and Java language constructs and libraries are much different, we can not get more safe conclusion by comparing apple with orange.</p>
 </blockquote>
