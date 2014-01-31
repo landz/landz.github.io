@@ -76,44 +76,44 @@ In fact, Landz itself is in the land of Java. As we known, there are many langua
 <h3>
 <a name="java-8" class="anchor" href="#java-8"><span class="octicon octicon-link"></span></a>Java 8</h3>
 
-<p>The Landz only supports Java 8+. So, if you are not comfortable about the  when you reach here. You may ignore the rest part of this article. And, it is sorry for this.</p>
+<p>The Landz only supports Java 8+. So, if you are not comfortable about this when you reach here. You may ignore the rest part of this article. And, it is sorry for this.</p>
 
-<p>Yes, the Java 8 has not been officially released now. However, still from these years' experience of one Java veteran, soon we may not live without it.</p>
+<p>Yes, the Java 8 has not been officially released now. However, from these years' experience of one Java veteran, soon we may not live without it.</p>
 
 <p>The most impressive thing happened in Java 8, in my eye, is not the numerous new features, but the constructive atmosphere which I seen in the communities around OpenJDK become thriving.</p>
 
-<p>All features are decided by some fews and under the secrete table. (And, this still holds to most JavaEE JSRs. this is why JavaEE has killed themselves.) This is just the primary impression of Java to the common Java developers in a long term. The open source of Java indeed changes the evolution of Java. More language designers and implementors come to the community to make themselves being more wise and less stupid.</p>
+<p>All features are decided by some fews and under the secrete table. (And, this still holds to most JavaEE JSRs. this is why JavaEE has killed themselves.) This is just the primary impression of Java to the common Java developers in a long term. The open-sourcing of Java indeed changes the evolution of Java. More language designers and implementors come to the community to make themselves being more wise and less stupid.</p>
 
 <p>Landz has heavily used all the wonderful of Java 8. But I do not repeat any about Java 8 more. Serve yourself by googling.</p>
 
 <h3>
 <a name="z-kernel" class="anchor" href="#z-kernel"><span class="octicon octicon-link"></span></a>Z Kernel</h3>
 
-<p>As its name, z.kernel provide a core must-have of Landz(but still require OpenJDK 8+). The kernel is designed to use as a library. Then, it has three merits:</p>
+<p>As its name, z.kernel provide a core must-have of Landz(but still requires OpenJDK 8+). The kernel is designed to use as a library. Then, it has three merits:</p>
 
 <ul>
-<li>any framwork behaviour is not allowed. something like adding agent to your boot command line to enable bytecode magic; </li>
-<li>single jar. Lanz kernel does not rely on 3rd parties library except OpenJDK 8+;(in fact, it can run on OpenJDK 8 Compact profile 1)</li>
-<li>platform-independent.</li>
+<li>Any framwork behaviour is not allowed. Like, adding agent to your boot command line to enable bytecode magic; </li>
+<li>Single jar. Lanz kernel does not rely on 3rd parties library except OpenJDK 8+;(in fact, it can run on OpenJDK 8 Compact profile 1)</li>
+<li>Platform-independent.</li>
 </ul><h3>
 <a name="concurrency-facilities" class="anchor" href="#concurrency-facilities"><span class="octicon octicon-link"></span></a>Concurrency Facilities</h3>
 
-<p>The frequency match has been come its death end several years ago. Multi-core is the destination for next tens of years(although the number of mainstream x86 cores increase very slowly for kinds of reasons.) That means, we can only scale with bare metal when we have the right concurrency tools.</p>
+<p>The frequency match has been come its death end several years ago. Multi-core is the destination for next tens of years(although the number of mainstream x86 cores increase very slowly in our feeling for kinds of reasons.) That means, we can only scale with bare metal when we have the right concurrency tools.</p>
 
-<p>We can not require every developer to understand the JMM or the internal of cache coherence . So, Landz has investigated, provided and continues to improve/add the best concurrency facilities in the world into its kernel for your . </p>
+<p>Landz has investigated, provided and continues to improve/add the best concurrency facilities in the world into its kernel for your . </p>
 
 <h4>
 <a name="itcinter-thread-communication-channel" class="anchor" href="#itcinter-thread-communication-channel"><span class="octicon octicon-link"></span></a>Inter-Thread-Communication(ITC) Channel</h4>
 
-<p>Firstly, Landz has provided some lock-free queue implementations as ITC mechanism via the Channel API. </p>
+<p>Firstly, Landz has provided some lock-free queue implementations as ITC mechanism via the <a href="https://github.com/landz/z-stack/tree/master/landz.kernel/src/z/channel">Channel API</a>. </p>
 
-<p>Particularly, HyperLoop (OK, the name ) is a ring buffer backed SPSC(Single-Producer Single-Consumer) or SPMC(Single-Producer Multi-Consumer) queue as a data structure rather than <a href="https://github.com/LMAX-Exchange/disruptor">Disruptor</a>'s framework style. So the usage of HyperLoop is much easier than the Disruptor. We provide two primitive specializations of HyperLoop to enble extreme performance when your needed. The most important benefit of HyperLoop (and Disruptor) is, that it does not use any full memory fence in cache-coherence-maintianed arch CPU. But note, the HyperLoop (and Disruptor) is just excellent for broadcasting style delivery mechanism. So, it is not usual sense "queue". Then, further more, the slow consumers block the whole progress of producting/consuming. This limits the usage of such channel. HyperLoop has the similiar throughput like Disruptor, but shows 50%-100%+ latency improvement on my i7+linux environment(without affinity pinning. note: Landz provides a great affinity binding DSL in landz.znr.linux.x64).</p>
+<p><a href="https://github.com/landz/z-stack/blob/master/landz.kernel/src/z/channel/GenericHyperLoop.java">HyperLoop</a> (OK, the name is "") is a ring buffer backed SPSC(Single-Producer Single-Consumer) or SPMC(Single-Producer Multi-Consumer) queue as a data structure rather than <a href="https://github.com/LMAX-Exchange/disruptor">Disruptor</a>'s framework style. So the usage of HyperLoop is much easier than the Disruptor. We provide two primitive specializations of HyperLoop to enble extreme performance when your needed. The most important benefit of HyperLoop (and Disruptor) is, that it does not use any full memory fence in cache-coherence-maintianed arch CPU. But note, the HyperLoop (and Disruptor) is just excellent for broadcasting style delivery mechanism. So, it is not usual sense "queue". Then, further more, the slow consumers block the whole progress of producting/consuming. This limits the usage of such channel. HyperLoop has the similiar throughput like Disruptor, but shows 50%-100%+ latency improvement on my i7+linux environment(without affinity pinning. note: Landz provides a great affinity binding DSL in landz.znr.linux.x64).</p>
 
-<p><strong>GenericMPMCQueue gives a lock-free MPMC(Multi-Producer Multi-Consumer) queue implementation</strong>. This implementation is based on Google' <a href="http://research.google.com/pubs/DmitryVyukov.html">Dmitry Vyukov</a>(now work for Golang concurrency)'s <a href="http://www.1024cores.net/home/lock-free-algorithms/queues/bounded-mpmc-queue">MPMC queue</a>. GenericMPMCQueue is the only correct quasi-lock-free MPMC queue implementation I have seen in open source Java till now. It is genernally faster than great Doug Lea's well-known ConcurrentLinkedQueue(Sometimes, it demonstrates 7x fastest than CLQ in one of Landz tests. Note: Landz wins in this testcase because the better memory locality but not due to the GC overloading.) The only cute is that GenericMPMCQueue is not totally lock-free(Vyukov's words), but Doug Lea's CLQ is. GenericMPMCQueue can not guarantee the progress of system at some times but as you seen it works greatly for pratices.(Detail theory needs another article to cover...)</p>
+<p><a href="https://github.com/landz/z-stack/blob/master/landz.kernel/src/z/channel/GenericMPMCQueue.java">GenericMPMCQueue</a> gives a lock-free MPMC(Multi-Producer Multi-Consumer) queue implementation</strong>. This implementation is based on Google' <a href="http://research.google.com/pubs/DmitryVyukov.html">Dmitry Vyukov</a>(now work for Golang concurrency)'s <a href="http://www.1024cores.net/home/lock-free-algorithms/queues/bounded-mpmc-queue">MPMC queue</a>. GenericMPMCQueue is the only correct quasi-lock-free MPMC queue implementation I have seen in open source Java till now. It is genernally faster than great Doug Lea's well-known ConcurrentLinkedQueue(Sometimes, it demonstrates 7x fastest than CLQ in one of Landz tests. Note: Landz wins in this testcase because the better memory locality but not due to the GC overloading.) The only cute is that GenericMPMCQueue is not totally lock-free(Vyukov's words), but Doug Lea's CLQ is. GenericMPMCQueue can not guarantee the progress of system at some times but as you seen it works greatly for pratices.(Detail theory needs another article to cover...)</p>
 
 <p>Different to all I reviewed lock-free queue Java implementations, all Landz's implementations has a suit of robost tests to gaurantee the correctness of them. And Landz used the offheap to offer the false-shareing avoidance and memory alignment. In the investigation of existed implementations, I find a barrier bug in Disruptor and an implementation mistake in <a href="https://github.com/puniverse/quasar">Quasar</a> (to my interesting, Quasar is developed by a company funded by the Y combinator). So, Landz does its best to provide the best APLed open source implementations which you can use in your production.</p>
 
-<p>There are some other implementations of SPSC likes shown in <a href="http://psy-lob-saw.blogspot.com/">Nitsan Wakart's blog</a>. The experiments by me shows that the largest throughput can only be available in a case of special large buffer size(and not matched with the comments left by Nitsan himself). For the massive ITC, the total buffer requirement is O(n^2), n is the number of thread. The bloating soon kills the speed of SPSC. Another problem for Nitsan's work is that, throughput is not the whole story of his SPSC. The full analysis is not given out on the exact means of the value of throughput. Generally, a delay (in latency) will improve the throughput with a large buffer. With the delay, the internal buffer can be filled by more. According to this statement, the maximum throughput can be achieved with filling an array and exchanging this array object via a non-full-fence SPSC, and the result should be similiar(G+ OP/s, not the Nitsan's MOP/S). There is some discussions in <a href="http://www.infoq.com/articles/High-Performance-Java-Inter-Thread-Communications/">one recent infoq article</a> on this by me and others. OK. This is still not full picture in fact. We leave more details to the future's article. </p>
+<p>There are some other implementations of SPSC likes shown in <a href="http://psy-lob-saw.blogspot.com/">Nitsan Wakart's blog</a>. The experiments by me shows that the largest throughput can only be available in a case of special large buffer size(and not matched with the comments left by Nitsan himself). For the massive ITC, the total buffer requirement is O(n^2), n is the number of thread. The bloating soon kills the speed of SPSC. Another problem for Nitsan's work is that, throughput is not the whole story of his SPSC. The full analysis is not given out on the exact means of the value of throughput. Generally, a delay (in latency) will improve the throughput with a large buffer. With the delay, the internal buffer can be filled by more. According to this statement, the maximum throughput can be achieved with filling an array and exchanging this array object via a non-full-fence SPSC, and the result should be similiar(G+ OP/s, not the Nitsan's MOP/S). There are some discussions in <a href="http://www.infoq.com/articles/High-Performance-Java-Inter-Thread-Communications/">one recent infoq article</a> on this by me and others. OK. This is still not full picture in fact. We leave more details to the future's article. </p>
 
 <h4>
 <a name="concurrency-constructs" class="anchor" href="#concurrency-constructs"><span class="octicon octicon-link"></span></a>Concurrency Constructs</h4>
@@ -126,14 +126,16 @@ In fact, Landz itself is in the land of Java. As we known, there are many langua
 
 <p>Coroutine like lightweight thread provides lightweight way in its appearance. But how to cooperate betweem coroutines is still a problem for programmer. </p>
 
-<p>I try to see if Landz can mitigate this pain of programmer by use of new concepts and technologies in Java community, like the great working stealing shown in the Java 7 forkjoin. I have not completed the Landz concurrency constructs. If you have ideas about this for Landz should reference or implement, do not hesitate to give your suggestions in the <a href="http://groups.google.com/d/forum/landz">Landz's group</a>.</p>
+<p>Please distinguish the asynchronous style from concurrency constructs here. Such as Netflix's RxJava, Spotify's Trickle(oh, very hot field), do not resolve the problem of asynchronous code's efficient execution. They just add a their-thought-beautiful frontend before the thread pool.</p>
+
+<p>I try to see if Landz can mitigate this pain of programmer from new ideas like the great working stealing shown in the Java 7 forkjoin. I have not completed the Landz concurrency constructs. If you have ideas about this for Landz should reference or implement, do not hesitate to give your suggestions in the <a href="http://groups.google.com/d/forum/landz">Landz's group</a>.</p>
 
 <h3>
 <a name="offheap-facilities" class="anchor" href="#offheap-facilities"><span class="octicon octicon-link"></span></a>Offheap Facilities</h3>
 
 <p>Java heap always shows bad stop time when the GC pressure is very high. However, this usually occurs in high performance Java field. One recent <a href="https://blog.twitter.com/2013/netty-4-at-twitter-reduced-gc-overhead">Twitter's blog entry</a> shows the problem and their effort on this side in <a href="http://netty.io/">Netty</a> 4.  The common solution is to use the offheap memory area which can be directly accessed by the hotspot unsafe tool (this is why Landz only declares to suppor the hotspot/openJDK) or indirectly like via nio buffer. </p>
 
-<p>Landz provides one best quasi-general offheap memory allocator - zmalloc. It is designed to have high performance with scalable hardware support(lock-free, space-compact), zero garbage generation and built-in statistics in the pure Java. </p>
+<p>Landz provides one best quasi-general offheap memory allocator - <a href="https://github.com/landz/z-stack/blob/master/landz.kernel/src/z/offheap/zmalloc/Allocator.java">zmalloc</a>. It is designed to have high performance with scalable hardware support(lock-free, space-compact), zero garbage generation and built-in statistics in the pure Java. </p>
 
 <p>Generally, people can use object/buffer pool to avoid the complex general malloc technique. But the pool fails in the following cases:</p>
 
@@ -175,7 +177,7 @@ these objects still worsen GC scanning although they are not garbage, but GC doe
 
 <p>It must be said that, the access to offheap is dangerous! So, you should double check you keep all of the contracts of offheap area.</p>
 
-<p>And for these reasons, we desgin a high level Buffer inspired by Netty ByteBuf on the top zmalloc. The final choose to the Netty way rather than Java nio Buffer is, that it is find that even <a href="http://mechanical-sympathy.blogspot.com/2011/12/java-sequential-io-performance.html">Martin Thompson forget to flip the nio buffer</a>.</p>
+<p>And for these reasons, we desgin a high level <a href="https://github.com/landz/z-stack/tree/master/landz.kernel/src/z/offheap/buffer">Buffer</a> inspired by Netty ByteBuf on the top zmalloc. The final choose to the Netty way rather than Java nio Buffer is, that it is find that even <a href="http://mechanical-sympathy.blogspot.com/2011/12/java-sequential-io-performance.html">Martin Thompson forget to flip the nio buffer</a>.</p>
 
 <p>In the desgin of Landz's Buffer, we carefully evaluate the Netty ByteBuf's pros and cons. Landz also provide the similiar methods to operate on buffer, but it is allow to interleave different endian bytes. Meantime, Landz takes care of the Buffer's performance to allow optional bound checking and downcast to avoid "interface juggling"(many invokeinterface-s in fluent interface pattern). Finally, the Landz's Buffer can be operated in a speed to close to that of raw offheap, and 40%+ faster than that of Netty ByteBuf.(the naming of ByteBuf is really ugly...)</p>
 
@@ -195,7 +197,7 @@ these objects still worsen GC scanning although they are not garbage, but GC doe
 
 <p>In this two days, Charles Nutter of JRuby team has proposed one <a href="https://gist.github.com/headius/8670271">Java FFI JEP</a> (for Java 9 definitely). </p>
 
-<p>Combining with Landz's offheap facilities, a layer accessed into Linux core native functions from Java has been constructed in pure Java, called ZNR(landZ Native Runtime). The Amazing thing is that all done in pure Java. This extremely reduces the cost of maintaining without any performance penalty except JNI overhead. In fact, the low plumbing provided by Wayne Meissner is JIT engine. I leave more fun for your exploring. Do not hesitate to ask in the <a href="http://groups.google.com/d/forum/landz">Landz's group</a> if you have any question.</p>
+<p>Combining with Landz's offheap facilities, a layer accessed into Linux core native functions from Java has been constructed in pure Java, called <a href="https://github.com/landz/z-stack/tree/master/landz.znr.linux.x64">ZNR</a>(landZ Native Runtime). The Amazing thing is that all done in pure Java. This extremely reduces the cost of maintaining without any performance penalty except JNI overhead. In fact, the low plumbing provided by Wayne Meissner is JIT engine. I leave more fun for your exploring. Do not hesitate to ask in the <a href="http://groups.google.com/d/forum/landz">Landz's group</a> if you have any question.</p>
 
 <p>About the performance, the jffi implementation can be faster than some JNI implementationss(note: the jffi itself is still based on JNI definitely). Like shown in landz, the znr's socket wrappers are even faster than one jboss project' xnio. This is because you do not wrapping yourself code into a JNI to call into the share library such as glibc.</p>
 
