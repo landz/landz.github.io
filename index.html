@@ -62,7 +62,7 @@ The answer is that your business become broken now. More, if you can not fix you
 <ul>
 <li><p><strong>compliant with any specification</strong>.
 this does not mean Landz do not implement any specification. But it means Landz keeps his independent judgement to these specifications. </p></li>
-<li><p><strong>promote any style.</strong>
+<li><p><strong>promote any programming style.</strong>
 You may think Landz should be in reactive or FP style. But it is not the goal of Landz. The style does not change the bare metal execution. Whether one style is easier to accept than others matters individually. Style is a thing that would be outdated easily. As a foundation, it is hoped the Landz can be welcome to the wider crowd with different favors. </p></li>
 <li><p><strong>polyglot for all languages</strong>.
 In fact, Landz itself is in the land of Java. As we known, there are many languages on JVM which try to resolve some problems in the enterpise(backend) Java development. Here, I do not comment on any these languages. What I love the Java language is that it is a kind of C++-- style. We can get the bare metal power from simple language constructs with Java.</p></li>
@@ -163,10 +163,11 @@ these objects still worsen GC scanning although they are not garbage, but GC doe
 <li>zmalloc is faster than jemalloc and glibc in these simple tests; </li>
 <li>
 <p>the glibc' malloc(modern kernel, like now my 3.12.9) has been faster than jemalloc(my 3.5.0) in several aspects in these simple tests;</p>
-
-<p>In the meantime, in single thread test, zmalloc is 20x to 50x faster than Netty's new <a href="https://blog.twitter.com/2013/netty-4-at-twitter-reduced-gc-overhead">ByteBufAllocator</a>. This confirms to the I understand to the Netty's new allocator. But, one unfair thing here is that the Netty only provide a Buffer implementation which is contributed to the garbage collection itself. However, zmalloc just operates on the raw memory address and products zero garbage. </p>
 </li>
 </ul>
+
+<p>In the meantime, in single thread test, zmalloc is 20x to 50x faster than Netty's new <a href="https://blog.twitter.com/2013/netty-4-at-twitter-reduced-gc-overhead">ByteBufAllocator</a>. This confirms to the I understand to the Netty's new allocator. But, one unfair thing here is that the Netty only provide a Buffer implementation which is contributed to the garbage collection itself. However, zmalloc just operates on the raw memory address and products zero garbage. </p>
+
 <p>For more complex scenarios, I do not further tests. Because the C and Java language constructs and libraries are much different, we can not get more safe conclusion by comparing apple with orange.</p>
 </blockquote>
 
@@ -203,18 +204,18 @@ these objects still worsen GC scanning although they are not garbage, but GC doe
 <h3>
 <a name="z-stack-for-web-backend" class="anchor" href="#z-stack-for-web-backend"><span class="octicon octicon-link"></span></a>Z Stack for Web Backend</h3>
 
-<p>Except the kernel, we need a web backend stack, not only to promote Landz itself, but also to enable the Landz "eating its own dog food". An direct epoll syscall wrappings have been provided finally based on my reflections and reviews to the current Java shipped NIO implementation(but only for x86-64 linux now). This seems also interesting to the next version of Netty mentioned in <a href="https://blog.twitter.com/2013/netty-4-at-twitter-reduced-gc-overhead">Twitter blog entry</a>. And more, an AIO style of TCP module(landz.net module) is ready(the formal name may be <strong>Proactor</strong>). Because I prefer a composable architecture, rather than the common inherited design. It may need more collections to the requirements to API from the users.</p>
+<p>Except the kernel, we need a web backend stack, not only to promote Landz itself, but also to enable the Landz "eating its own dog food". An direct epoll syscall wrappings have been provided finally based on my reflections and reviews to the current Java shipped NIO implementation(but only for x86-64 linux now). This seems also interesting to the next version of Netty mentioned in <a href="https://blog.twitter.com/2013/netty-4-at-twitter-reduced-gc-overhead">Twitter blog entry</a>. And more, an aio TCP module(landz.net module) is ready(the formal name may be Proactor). Because I prefer a composable architecture, rather than the common inherited design. It may need more collections to the requirements to API from the users.</p>
 
 <p>A whole web backend is huge, Landz is glad to collaborate with other open source projects. Join us at <a href="http://groups.google.com/d/forum/landz">Landz's group</a>.</p>
 
 <h2>
-<a name="near-or-far-future" class="anchor" href="#near-or-far-future"><span class="octicon octicon-link"></span></a>Near or Far Future</h2>
+<a name="near-and-far-future" class="anchor" href="#near-and-far-future"><span class="octicon octicon-link"></span></a>Near and Far Future</h2>
 
 <p>For much limited resources and natural affinity to open source world, the Landz own stack will be natively built and extremely optimized with the modern Linux kernel + modern x86-64 hardware. The z stack will be ported into x86-64 Windows and MacOS for the purpose of developement but the performance will not be touched. We limit our strength to the power and fun of . This just follows our Landz's philosophies.</p>
 
 <p>Landz are also interesting to the next 64bit ARM server side hardware. A dedicated support will be provided for it when its coming into the real production. I personally think the first generation of 64bit ARM will be much below the x86 in the side of performance. But it deserves embracing from Landz for a more wide and open ecosystem than x86. That is the Landz's taste! </p>
 
-<p>Landz continue to review and introduce some goodies in the Java world, like Guava. It is a joy to work with best open source contributions in the world for Landz's users and Landz itself.</p>
+<p>Landz continue to review and introduce good practices for software engineering(but which is good practices), like Guava. It is a joy to work with best open source contributions in the world for Landz's users and Landz itself.</p>
 
 <p>Java 8 has been already in the bleeding edge front. Landz has great passion to push the front on top of next open Java, like GPU, cluster, big data side, or something like (security)rule engine...Nothing is impossible!</p>
 
@@ -226,7 +227,7 @@ these objects still worsen GC scanning although they are not garbage, but GC doe
 
 <p>Let's keep rolling!</p>
 
-<p>Jin Mingjian
+<p><a href="mailto:%20jin.phd@gmail.com">Jin Mingjian</a>
 <br>
 2014-01-31 </p>
       </section>
